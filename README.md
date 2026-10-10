@@ -4,6 +4,8 @@ This folder contains the revised manuscript and the evidence files for the CRPS 
 
 Public repository: https://github.com/jopoku16/crps-affine-audit
 
+Archived release: https://doi.org/10.5281/zenodo.23288536
+
 ## Main files
 
 - `manuscript_simple_revised.tex`: main manuscript source.

@@ -19,3 +19,5 @@ abstract: >-
   comparisons.
 license: GPL-3.0-or-later
 repository-code: "https://github.com/jopoku16/crps-affine-audit"
+doi: "10.5281/zenodo.23288536"
+url: "https://doi.org/10.5281/zenodo.23288536"
