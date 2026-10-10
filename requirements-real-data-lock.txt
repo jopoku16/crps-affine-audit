@@ -1,0 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+# Created with Python 3.13.7 for the expanded real-data and affine study.
+fast_pytorch_kmeans==0.2.2
+gpytorch==1.15.2
+numpy==2.4.6
+pandas==2.3.3
+scikit-learn==1.9.0
+scipy==1.16.3
+torch==2.14.0+cpu

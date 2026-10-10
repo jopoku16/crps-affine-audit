@@ -1,0 +1,12 @@
+Expanded real-data audit environment
+Date: 2026-10-08
+OS: Windows, 64 bit
+Python: 3.13.7
+R: 4.6.1
+torch: 2.14.0+cpu
+gpytorch: 1.15.2
+fast-pytorch-kmeans: 0.2.2
+numpy: 2.4.6
+pandas: 2.3.3
+scipy: 1.16.3
+Released source commit: dddd3ea46a6199d2ed48019c7825e79fb242787e

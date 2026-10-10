@@ -1,0 +1,30 @@
+{
+  "disclosed_postrun_diagnosis": true,
+  "replayed_original_compressions": 1000,
+  "affected_cases": [
+    {
+      "r": 44,
+      "t": 3,
+      "j": 0,
+      "seed": 20364589,
+      "node_count": 50,
+      "merged_after_float32_shift": 1,
+      "min_spacing": 5.960464477539063e-08,
+      "errors": {
+        "W32": 0.000264184730701722,
+        "identity32": 0.00025796287082585634,
+        "W64": 2.7755575615628914e-16,
+        "identity64": 2.7755575615628914e-16
+      }
+    }
+  ],
+  "maximum_errors": {
+    "W32": 0.000264184730701722,
+    "identity32": 0.00025796287082585634,
+    "W64": 7.327471962526033e-15,
+    "identity64": 6.328271240363392e-15
+  },
+  "hypothesis_supported": true,
+  "main_global_verdict_unchanged": "FAIL",
+  "diagnosis_protocol_commit": "9e96574ce4452542548686dd34d36c5044a8595a"
+}

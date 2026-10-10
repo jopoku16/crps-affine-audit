@@ -1,0 +1,232 @@
+{
+  "method_name": "affine-standardized weighted CRPS wrapper",
+  "source_commit": "dddd3ea46a6199d2ed48019c7825e79fb242787e",
+  "precipitation": {
+    "dataset": "Innsbruck 12-hour precipitation ensemble",
+    "rows": 2749,
+    "ensemble_members": 11,
+    "configuration": [
+      8,
+      5
+    ],
+    "transformations": {
+      "millimetres_to_inches": {
+        "a": 0.03937007874015748,
+        "b": 0.0
+      },
+      "positive_affine_recoding": {
+        "a": 0.03937007874015748,
+        "b": 10.0
+      }
+    },
+    "summary": {
+      "millimetres_to_inches": {
+        "released": {
+          "rows": 2749,
+          "median_absolute_change_mm": 2.1771326459418816e-06,
+          "p95_absolute_change_mm": 0.21265576939020464,
+          "maximum_absolute_change_mm": 14.89786412425429,
+          "proportion_above_2e_4": 0.2582757366315024
+        },
+        "weighted_empirical": {
+          "rows": 2749,
+          "median_absolute_change_mm": 3.3115811071127155e-07,
+          "p95_absolute_change_mm": 0.034630356471714835,
+          "maximum_absolute_change_mm": 1.0427682959999345,
+          "proportion_above_2e_4": 0.24736267733721354
+        },
+        "translation_anchored": {
+          "rows": 2749,
+          "median_absolute_change_mm": 2.9042763083353407e-07,
+          "p95_absolute_change_mm": 0.028530484806351685,
+          "maximum_absolute_change_mm": 0.6950395343041142,
+          "proportion_above_2e_4": 0.30447435431065845
+        },
+        "affine_standardized": {
+          "rows": 2749,
+          "median_absolute_change_mm": 2.7755575615628914e-17,
+          "p95_absolute_change_mm": 1.7763568394002505e-15,
+          "maximum_absolute_change_mm": 1.0658141036401503e-14,
+          "proportion_above_2e_4": 0.0
+        },
+        "full_fair_sorted": {
+          "rows": 2749,
+          "median_absolute_change_mm": 8.326672684688674e-17,
+          "p95_absolute_change_mm": 1.7763568394002505e-15,
+          "maximum_absolute_change_mm": 1.0658141036401503e-14,
+          "proportion_above_2e_4": 0.0
+        }
+      },
+      "positive_affine_recoding": {
+        "released": {
+          "rows": 2749,
+          "median_absolute_change_mm": 33.99969668889834,
+          "p95_absolute_change_mm": 109.13622062437928,
+          "maximum_absolute_change_mm": 254.00003473460782,
+          "proportion_above_2e_4": 1.0
+        },
+        "weighted_empirical": {
+          "rows": 2749,
+          "median_absolute_change_mm": 0.015571108586807964,
+          "p95_absolute_change_mm": 0.4604408653381888,
+          "maximum_absolute_change_mm": 3.650684346338238,
+          "proportion_above_2e_4": 0.887595489268825
+        },
+        "translation_anchored": {
+          "rows": 2749,
+          "median_absolute_change_mm": 2.904276237281067e-07,
+          "p95_absolute_change_mm": 0.02853048480635999,
+          "maximum_absolute_change_mm": 0.6950395343040991,
+          "proportion_above_2e_4": 0.30447435431065845
+        },
+        "affine_standardized": {
+          "rows": 2749,
+          "median_absolute_change_mm": 8.104628079763643e-15,
+          "p95_absolute_change_mm": 2.6900703886667538e-14,
+          "maximum_absolute_change_mm": 4.4547698863084406e-14,
+          "proportion_above_2e_4": 0.0
+        },
+        "full_fair_sorted": {
+          "rows": 2749,
+          "median_absolute_change_mm": 8.43769498715119e-15,
+          "p95_absolute_change_mm": 2.6645352591003757e-14,
+          "maximum_absolute_change_mm": 4.618527782440651e-14,
+          "proportion_above_2e_4": 0.0
+        }
+      }
+    },
+    "controls": {
+      "failures": [],
+      "constant_ensemble_rows": 64,
+      "affine_standardized_maximum_mm": 4.4547698863084406e-14,
+      "full_fair_maximum_mm": 4.618527782440651e-14,
+      "pass": true
+    },
+    "runtime_seconds": 97.39274909999222
+  },
+  "runtime_accuracy": {
+    "distribution": "standard Normal",
+    "observation": 0.25,
+    "population_crps": 0.25849981289940416,
+    "configuration": [
+      40,
+      20
+    ],
+    "rows": [
+      {
+        "ensemble_size": 100,
+        "method": "released_compressed",
+        "repetitions": 12,
+        "median_milliseconds": 14.740899961907417,
+        "p95_milliseconds": 16.2386349926237,
+        "rmse_vs_population_crps": 0.04538822333996481,
+        "mean_error": -0.03605657392590774
+      },
+      {
+        "ensemble_size": 100,
+        "method": "affine_standardized",
+        "repetitions": 12,
+        "median_milliseconds": 14.155200042296201,
+        "p95_milliseconds": 15.241330041317267,
+        "rmse_vs_population_crps": 0.034450315559027826,
+        "mean_error": 0.0010290867448350717
+      },
+      {
+        "ensemble_size": 100,
+        "method": "full_fair_sorted",
+        "repetitions": 12,
+        "median_milliseconds": 0.1057499903254211,
+        "p95_milliseconds": 0.182819995097816,
+        "rmse_vs_population_crps": 0.03587227855770564,
+        "mean_error": -0.008407984284543132
+      },
+      {
+        "ensemble_size": 100,
+        "method": "full_fair_pairwise",
+        "repetitions": 12,
+        "median_milliseconds": 0.058399979025125504,
+        "p95_milliseconds": 0.08467001025564969,
+        "rmse_vs_population_crps": 0.03587227855770569,
+        "mean_error": -0.0084079842845431
+      },
+      {
+        "ensemble_size": 500,
+        "method": "released_compressed",
+        "repetitions": 12,
+        "median_milliseconds": 26.18484996492043,
+        "p95_milliseconds": 27.566100045805797,
+        "rmse_vs_population_crps": 0.036647236185747264,
+        "mean_error": -0.03330377154921394
+      },
+      {
+        "ensemble_size": 500,
+        "method": "affine_standardized",
+        "repetitions": 12,
+        "median_milliseconds": 24.676600005477667,
+        "p95_milliseconds": 25.89588506380096,
+        "rmse_vs_population_crps": 0.006796158624236496,
+        "mean_error": -0.0003803638962049799
+      },
+      {
+        "ensemble_size": 500,
+        "method": "full_fair_sorted",
+        "repetitions": 12,
+        "median_milliseconds": 0.10400003520771861,
+        "p95_milliseconds": 0.11878997320309281,
+        "rmse_vs_population_crps": 0.008321196979357869,
+        "mean_error": -0.004162058320345247
+      },
+      {
+        "ensemble_size": 500,
+        "method": "full_fair_pairwise",
+        "repetitions": 12,
+        "median_milliseconds": 1.5910500078462064,
+        "p95_milliseconds": 1.732195005752146,
+        "rmse_vs_population_crps": 0.00832119697935791,
+        "mean_error": -0.004162058320345274
+      },
+      {
+        "ensemble_size": 2000,
+        "method": "released_compressed",
+        "repetitions": 12,
+        "median_milliseconds": 49.361150013282895,
+        "p95_milliseconds": 60.76700998819433,
+        "rmse_vs_population_crps": 0.026700782683448512,
+        "mean_error": -0.02467121190072986
+      },
+      {
+        "ensemble_size": 2000,
+        "method": "affine_standardized",
+        "repetitions": 12,
+        "median_milliseconds": 40.3019999503158,
+        "p95_milliseconds": 42.840504995547235,
+        "rmse_vs_population_crps": 0.008973375991504893,
+        "mean_error": 0.004588752829000856
+      },
+      {
+        "ensemble_size": 2000,
+        "method": "full_fair_sorted",
+        "repetitions": 12,
+        "median_milliseconds": 0.12149999383836985,
+        "p95_milliseconds": 0.175170024158433,
+        "rmse_vs_population_crps": 0.006657114226925867,
+        "mean_error": 0.00098953313435667
+      },
+      {
+        "ensemble_size": 2000,
+        "method": "full_fair_pairwise",
+        "repetitions": 12,
+        "median_milliseconds": 29.761149955447763,
+        "p95_milliseconds": 32.04077999689616,
+        "rmse_vs_population_crps": 0.006657114226925864,
+        "mean_error": 0.00098953313435667
+      }
+    ]
+  },
+  "environment": {
+    "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.14.0+cpu",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3"
+  }
+}

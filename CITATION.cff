@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this audit or its code, please cite this release."
+title: "When Compressed CRPS Depends on Measurement Units: Diagnosis and an Affine-Stable Correction"
+type: software
+version: 1.0.0
+date-released: 2026-10-10
+authors:
+  - family-names: Ofori
+    given-names: Hurcheson Asante
+    affiliation: University of Texas Rio Grande Valley
+  - family-names: Opoku
+    given-names: Jeffery
+    affiliation: University of Texas Rio Grande Valley
+    email: opokujeffery5@gmail.com
+abstract: >-
+  Reproducibility package for a source-specific audit of a public CRPS
+  compression implementation. The package includes an affine-standardized
+  weighted CRPS wrapper, exact tests, real weather validations, and runtime
+  comparisons.
+license: GPL-3.0-or-later
+repository-code: "https://github.com/jopoku16/crps-affine-audit"

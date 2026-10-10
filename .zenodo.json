@@ -1,0 +1,43 @@
+{
+  "title": "When Compressed CRPS Depends on Measurement Units: Diagnosis and an Affine-Stable Correction",
+  "description": "Reproducibility package for a source-specific CRPS implementation audit. It contains an affine-standardized weighted CRPS wrapper, exact tests, temperature and precipitation validations, runtime comparisons, and the manuscript.",
+  "upload_type": "software",
+  "publication_date": "2026-10-10",
+  "version": "1.0.0",
+  "license": "GPL-3.0-or-later",
+  "creators": [
+    {
+      "name": "Ofori, Hurcheson Asante",
+      "affiliation": "School of Mathematical and Statistical Sciences, University of Texas Rio Grande Valley"
+    },
+    {
+      "name": "Opoku, Jeffery",
+      "affiliation": "School of Mathematical and Statistical Sciences, University of Texas Rio Grande Valley"
+    }
+  ],
+  "keywords": [
+    "continuous ranked probability score",
+    "probabilistic forecasting",
+    "kernel quadrature",
+    "software audit",
+    "forecast verification",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/jopoku16/crps-affine-audit",
+      "relation": "isVersionOf",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://proceedings.mlr.press/v271/adachi25a.html",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/ma921/CRPS/tree/dddd3ea46a6199d2ed48019c7825e79fb242787e",
+      "relation": "references",
+      "scheme": "url"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "dataset": "ensemblepp 1.0-0 temp",
+  "source_commit": "dddd3ea46a6199d2ed48019c7825e79fb242787e",
+  "configuration": {
+    "members": 11,
+    "landmarks": 8,
+    "compressed_nodes": 5,
+    "shift": 273.15
+  },
+  "controls": {
+    "rows": 2749,
+    "missing_values": 0,
+    "source_failures": 0,
+    "maximum_weight_mass_error": 2.868473529815674e-07,
+    "minimum_weight": 3.725290298461914e-08,
+    "maximum_public_function_error": 5.393301805156625e-05,
+    "maximum_full_fair_shift_error": 2.842170943040401e-14,
+    "pass": true
+  },
+  "primary": {
+    "released": {
+      "median": 35.507651239160424,
+      "p95": 86.71716274890417,
+      "maximum": 152.81065832650305,
+      "count_above_0_01": 2749,
+      "practical_invariance_pass": false
+    },
+    "normalized_pair": {
+      "median": 0.04058111938465281,
+      "p95": 0.4484053038530938,
+      "maximum": 6.575730996763095,
+      "count_above_0_01": 2202,
+      "practical_invariance_pass": false
+    },
+    "weighted_empirical": {
+      "median": 0.022721609396981535,
+      "p95": 0.36282299453943967,
+      "maximum": 4.0245266128025605,
+      "count_above_0_01": 1843,
+      "practical_invariance_pass": false
+    },
+    "full_fair": {
+      "median": 1.2434497875801753e-14,
+      "p95": 2.4868995751603507e-14,
+      "maximum": 2.842170943040401e-14,
+      "count_above_0_01": 0,
+      "practical_invariance_pass": true
+    }
+  },
+  "secondary": {
+    "released": [
+      {
+        "origin": "Celsius",
+        "rmse": 1.7474538146127159,
+        "difference_vs_released": 0.0,
+        "difference_CI95": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "origin": "Kelvin",
+        "rmse": 48.50604575671031,
+        "difference_vs_released": 0.0,
+        "difference_CI95": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "normalized_pair": [
+      {
+        "origin": "Celsius",
+        "rmse": 0.24685746795445757,
+        "difference_vs_released": -1.5005963466582584,
+        "difference_CI95": [
+          -1.592404336700957,
+          -1.4087754879597112
+        ]
+      },
+      {
+        "origin": "Kelvin",
+        "rmse": 0.26145274153588366,
+        "difference_vs_released": -48.244593015174424,
+        "difference_CI95": [
+          -49.29707995478019,
+          -47.21111358643645
+        ]
+      }
+    ],
+    "weighted_empirical": [
+      {
+        "origin": "Celsius",
+        "rmse": 0.15428795185200245,
+        "difference_vs_released": -1.5931658627607135,
+        "difference_CI95": [
+          -1.694599524695094,
+          -1.4952909103382308
+        ]
+      },
+      {
+        "origin": "Kelvin",
+        "rmse": 0.2654398502912877,
+        "difference_vs_released": -48.24060590641902,
+        "difference_CI95": [
+          -49.29604021634128,
+          -47.21774783000154
+        ]
+      }
+    ]
+  }
+}

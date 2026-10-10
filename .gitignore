@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.aux
+*.log
+*.out
+tmp/
+real_data/author_crps/
+real_data/python_lib/
+real_data/*.tar.gz
+real_data/*.partial.json
