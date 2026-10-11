@@ -1,0 +1,121 @@
+{
+  "dataset": "UCI Bike Sharing hourly rental counts",
+  "dataset_url": "https://archive.ics.uci.edu/static/public/275/bike+sharing+dataset.zip",
+  "dataset_doi": "10.24432/C5W894",
+  "dataset_license": "CC BY 4.0",
+  "zip_sha256": "b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401",
+  "source_rows": 17379,
+  "eligible_past_only_cases": 16419,
+  "audited_cases": 2000,
+  "selection": "evenly spaced over all eligible cases",
+  "forecast": {
+    "description": "20 most recent earlier counts with the same hour and working-day status",
+    "ensemble_members": 20,
+    "uses_future_data": false
+  },
+  "configuration": [
+    10,
+    6
+  ],
+  "tolerance_rides": 0.0002,
+  "transformations": {
+    "rides_to_hundreds": {
+      "a": 0.01,
+      "b": 0.0
+    },
+    "affine_stress_recoding": {
+      "a": 0.01,
+      "b": 10.0
+    }
+  },
+  "summary": {
+    "rides_to_hundreds": {
+      "released_compressed": {
+        "rows": 2000,
+        "median_absolute_change_rides": 0.0001745732898328356,
+        "p95_absolute_change_rides": 8.244128646767583,
+        "maximum_absolute_change_rides": 106.27600264664261,
+        "proportion_above_tolerance": 0.4795
+      },
+      "weighted_empirical": {
+        "rows": 2000,
+        "median_absolute_change_rides": 1.6130142588277607e-05,
+        "p95_absolute_change_rides": 1.4074567544747303,
+        "maximum_absolute_change_rides": 25.457938981148907,
+        "proportion_above_tolerance": 0.218
+      },
+      "affine_standardized": {
+        "rows": 2000,
+        "median_absolute_change_rides": 1.7763568394002505e-15,
+        "p95_absolute_change_rides": 3.552713678800501e-14,
+        "maximum_absolute_change_rides": 1.2789769243681803e-13,
+        "proportion_above_tolerance": 0.0
+      },
+      "full_fair_sorted": {
+        "rows": 2000,
+        "median_absolute_change_rides": 3.552713678800501e-15,
+        "p95_absolute_change_rides": 2.842170943040401e-14,
+        "maximum_absolute_change_rides": 8.526512829121202e-14,
+        "proportion_above_tolerance": 0.0
+      }
+    },
+    "affine_stress_recoding": {
+      "released_compressed": {
+        "rows": 2000,
+        "median_absolute_change_rides": 144.84182314489357,
+        "p95_absolute_change_rides": 401.88596693462136,
+        "maximum_absolute_change_rides": 779.7636785477708,
+        "proportion_above_tolerance": 1.0
+      },
+      "weighted_empirical": {
+        "rows": 2000,
+        "median_absolute_change_rides": 1.2976354397678576,
+        "p95_absolute_change_rides": 12.985543815647787,
+        "maximum_absolute_change_rides": 57.14683270543898,
+        "proportion_above_tolerance": 0.984
+      },
+      "affine_standardized": {
+        "rows": 2000,
+        "median_absolute_change_rides": 2.4868995751603507e-14,
+        "p95_absolute_change_rides": 1.1368683772161603e-13,
+        "maximum_absolute_change_rides": 2.8421709430404007e-13,
+        "proportion_above_tolerance": 0.0
+      },
+      "full_fair_sorted": {
+        "rows": 2000,
+        "median_absolute_change_rides": 2.842170943040401e-14,
+        "p95_absolute_change_rides": 9.237055564881302e-14,
+        "maximum_absolute_change_rides": 2.4158453015843406e-13,
+        "proportion_above_tolerance": 0.0
+      }
+    }
+  },
+  "controls": {
+    "failures": [],
+    "affine_standardized_maximum_rides": 2.8421709430404007e-13,
+    "full_fair_maximum_rides": 2.4158453015843406e-13,
+    "pass": true
+  },
+  "development_diagnostic": {
+    "status": "post-hoc software hardening check",
+    "legacy_rule": "six-decimal torch.round (banker's rounding)",
+    "legacy_half_grid_case_transform_mismatches": 10,
+    "legacy_maximum_score_residual_rides": 0.4127653870793466,
+    "guarded_half_up_case_transform_mismatches": 0,
+    "action": "retained the failure, added a regression test, and replaced the legacy rule with guarded half-up canonicalization"
+  },
+  "first_case": {
+    "instant": 704,
+    "timestamp": "2011-02-01T16:00:00"
+  },
+  "last_case": {
+    "instant": 17379,
+    "timestamp": "2012-12-31T23:00:00"
+  },
+  "environment": {
+    "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.14.0+cpu",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3"
+  }
+}

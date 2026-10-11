@@ -1,0 +1,113 @@
+{
+  "study": "cross-library affine metamorphic controls",
+  "seed": 20261011,
+  "families": [
+    "normal",
+    "lognormal",
+    "student_t_3",
+    "two_component_mixture"
+  ],
+  "ensemble_sizes": [
+    5,
+    11,
+    50,
+    101
+  ],
+  "cases_per_family_size_cell": 250,
+  "total_forecast_cases": 4000,
+  "transformations_per_case": 5,
+  "transformations": [
+    {
+      "scale": 1.0,
+      "shift": 273.15,
+      "label": "origin_plus_273_15"
+    },
+    {
+      "scale": 1.0,
+      "shift": -10000.0,
+      "label": "origin_minus_10000"
+    },
+    {
+      "scale": 0.03937007874015748,
+      "shift": 10.0,
+      "label": "divide_25_4_plus_10"
+    },
+    {
+      "scale": 25.4,
+      "shift": -32.0,
+      "label": "times_25_4_minus_32"
+    },
+    {
+      "scale": 1000.0,
+      "shift": 100000.0,
+      "label": "times_1000_plus_100000"
+    }
+  ],
+  "absolute_tolerance_in_original_units": 1e-08,
+  "package_versions": {
+    "numpy": "2.5.4",
+    "properscoring": "0.1",
+    "scoringrules": "0.11.0",
+    "scores": "2.7.0",
+    "xarray": "2026.9.0",
+    "xskillscore": "0.0.29"
+  },
+  "implementation_notes": {
+    "properscoring": "public Python project",
+    "scoringrules": "separate public Python project",
+    "scores": "separate public project; its documentation records adapted CRPS code",
+    "xskillscore": "xarray interface that calls properscoring for ensemble CRPS"
+  },
+  "equal_weight": {
+    "local_sorted_reference": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.496802681799636e-12,
+      "maximum_reference_difference": 0.0
+    },
+    "properscoring": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3153922395758855e-12,
+      "maximum_reference_difference": 8.881784197001252e-16
+    },
+    "scoringrules": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3153922395758855e-12,
+      "maximum_reference_difference": 2.6645352591003757e-15
+    },
+    "scores": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.496802681799636e-12,
+      "maximum_reference_difference": 2.6645352591003757e-15
+    },
+    "xskillscore": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3153922395758855e-12,
+      "maximum_reference_difference": 8.881784197001252e-16
+    }
+  },
+  "unequal_weight": {
+    "local_weighted_reference": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3642420526593924e-12,
+      "maximum_reference_difference": 0.0
+    },
+    "properscoring_weighted": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3646861418692424e-12,
+      "maximum_reference_difference": 6.439293542825908e-15
+    },
+    "scoringrules_weighted": {
+      "comparisons": 20000,
+      "failures": 0,
+      "maximum_mapped_back_error": 1.3642420526593924e-12,
+      "maximum_reference_difference": 6.772360450213455e-15
+    }
+  }
+}

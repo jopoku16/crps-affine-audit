@@ -4,7 +4,7 @@ This folder contains the revised manuscript and the evidence files for the CRPS 
 
 Public repository: https://github.com/jopoku16/crps-affine-audit
 
-Archived release: https://doi.org/10.5281/zenodo.23288536
+First archived release: https://doi.org/10.5281/zenodo.23288536
 
 ## Main files
 
@@ -14,6 +14,12 @@ Archived release: https://doi.org/10.5281/zenodo.23288536
 - `real_data/affine_extension_results.json`: validation on 2,749 precipitation forecasts and the runtime study.
 - `real_data/run_expanded_validation.py`: script that generated the expanded real-data validation.
 - `real_data/run_affine_extension.py`: script for precipitation, affine recoding, runtime, and accuracy checks.
+- `real_data/run_bike_sharing_extension.py`: past-only bike-demand extension using the verified UCI archive.
+- `real_data/bike_sharing_affine_results.json`: stored results for 2,000 bike-demand forecasts.
+- `independent_controls/run_cross_library_controls.py`: affine metamorphic tests across public CRPS package interfaces.
+- `independent_controls/audit_source_history.py`: full public commit and blob audit without redistributing upstream code.
+- `independent_controls/cross_library_results.json`: stored results for 160,000 affine comparisons.
+- `independent_controls/source_history_results.json`: public commit and target-file blob history.
 - `real_data/corrected_crps.py`: translation-anchored and affine-standardized wrappers.
 - `supporting/`: preregistered robustness scripts, JSON outputs, source mapping records, and float32 diagnosis.
 - `requirements-main-lock.txt` and `requirements-real-data-lock.txt`: exact Python package sets for the two analysis environments.
@@ -41,6 +47,8 @@ python run_affine_extension.py
 
 The paper is a source-specific audit of released CRPS code. It does not claim that a published figure is wrong. It does not introduce a new proper score. It shows that the released compressed routine applies an equal-weight correction to unequal weights, derives the resulting translation error, verifies the formula against unchanged code, and tests correction paths on synthetic and real forecasts. It also proves the transformation law of an affine-standardized wrapper.
 
+The expanded audit also uses the positive-affine law as a metamorphic software test. Four public package interfaces pass all equal-weight tests, and two public weighted interfaces pass all weighted tests. These are negative controls, not evidence that the source defect is universal. The repository-history audit shows that the target files did not change after they first appeared in the public history.
+
 ## Real-data coverage
 
 The expanded real-data validation includes:
@@ -48,12 +56,25 @@ The expanded real-data validation includes:
 - 2,749 Innsbruck minimum-temperature cases from `ensemblepp`.
 - 36,826 Pacific Northwest surface-temperature cases.
 - 2,749 Innsbruck precipitation cases.
+- 2,000 past-only hourly bike-demand forecasts from the UCI Bike Sharing data.
 - Celsius/Kelvin paired scoring.
 - millimetre/inch and positive-affine paired scoring.
 - released compressed score, normalized pair correction, weighted empirical score, anchored weighted correction, and full fair CRPS.
 - equal-budget comparisons and an Innsbruck rolling ranking study.
 - runtime and accuracy comparisons against pairwise and sorted exact fair CRPS.
+- a retained half-grid failure from the first ASW-CRPS rounding rule, its regression test, and the guarded replacement.
 
 ## Reproducibility notes
 
 The audited source is not included in the public release. Run `python real_data/fetch_pinned_source.py` to retrieve and verify commit `dddd3ea46a6199d2ed48019c7825e79fb242787e` from the public repository. The package includes locked environments, public-data provenance, scripts, stored outputs, tests, and checksums. `CITATION.cff` and `.zenodo.json` provide metadata for the permanent archived release.
+
+To rerun the cross-package controls in a separate environment:
+
+```bash
+python -m venv .venv-controls
+.venv-controls/Scripts/python -m pip install -r requirements-independent-controls-lock.txt
+.venv-controls/Scripts/python independent_controls/run_cross_library_controls.py
+python independent_controls/audit_source_history.py
+```
+
+The existing Zenodo DOI identifies the first fixed release. The expanded controls in this working tree need a new versioned archive before they are cited as a fixed journal-submission release.

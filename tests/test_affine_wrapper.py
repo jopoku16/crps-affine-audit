@@ -10,7 +10,10 @@ REAL_DATA = ROOT / "real_data"
 sys.path.insert(0, str(REAL_DATA / "author_crps"))
 sys.path.insert(0, str(REAL_DATA))
 
-from corrected_crps import affine_standardized_weighted_compression
+from corrected_crps import (
+    affine_standardized_weighted_compression,
+    canonicalize_standardized,
+)
 from run_affine_extension import fair_pairwise, fair_sorted
 
 
@@ -41,6 +44,46 @@ class AffineWrapperTests(unittest.TestCase):
         self.assertAlmostEqual(
             fair_sorted(samples, 0.4), fair_pairwise(samples, 0.4), places=14
         )
+
+    def test_half_grid_boundary_is_canonical_after_recoding(self):
+        samples = np.array(
+            [
+                34,
+                68,
+                69,
+                72,
+                7,
+                82,
+                58,
+                93,
+                49,
+                51,
+                36,
+                77,
+                45,
+                75,
+                95,
+                102,
+                14,
+                83,
+                135,
+                61,
+            ],
+            dtype=float,
+        )
+        transformed = 0.01 * samples + 10.0
+        base = canonicalize_standardized(
+            (samples - samples.min()) / np.ptp(samples)
+        ).numpy()
+        recoded = canonicalize_standardized(
+            (transformed - transformed.min()) / np.ptp(transformed)
+        ).numpy()
+        np.testing.assert_array_equal(base, recoded)
+        score = self.score(samples, 177.0, seed=20263884)
+        transformed_score = self.score(
+            transformed, 0.01 * 177.0 + 10.0, seed=20263884
+        )
+        self.assertAlmostEqual(transformed_score / 0.01, score, places=10)
 
 
 if __name__ == "__main__":

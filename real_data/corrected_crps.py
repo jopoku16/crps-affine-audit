@@ -3,6 +3,25 @@ import torch
 from utils.kernel_quadrature import kq_compress
 
 
+CANONICAL_GRID = 1_000_000
+HALF_GRID_GUARD = 1e-6
+
+
+def canonicalize_standardized(values):
+    """Round nonnegative standardized values with a guarded half-up rule.
+
+    Positive-affine recodings can place the same mathematical value just above
+    and just below a half-grid boundary in float64. The small guard acts in
+    grid units and makes those machine-level perturbations choose the same
+    side. It changes a standardized coordinate by at most about 1e-6.
+    """
+    values = torch.as_tensor(values, dtype=torch.float64)
+    return (
+        torch.floor(values * CANONICAL_GRID + 0.5 + HALF_GRID_GUARD)
+        / CANONICAL_GRID
+    )
+
+
 def weighted_empirical_score(weights, nodes, observation):
     """CRPS of the normalized weighted empirical distribution."""
     w = weights.double()
@@ -54,11 +73,10 @@ def affine_standardized_weighted_compression(
         nodes = torch.zeros(1, dtype=torch.float64)
         return value, weights, nodes, location, scale
 
-    standardized64 = (x - location) / scale
-    # The pinned compressor uses float32. Canonical rounding before conversion
-    # prevents an affine recoding from landing on opposite sides of a float32
-    # boundary because of earlier float64 subtraction and division.
-    standardized64 = torch.round(standardized64 * 1_000_000) / 1_000_000
+    standardized64 = canonicalize_standardized((x - location) / scale)
+    # The pinned compressor uses float32. Canonicalization before conversion
+    # makes small float64 differences from equivalent recodings choose the same
+    # grid point, including values that lie on a half-grid boundary.
     standardized = standardized64.float()
     standardized_observation = (y - location) / scale
     torch.manual_seed(int(seed))

@@ -35,3 +35,21 @@ check out the named commit, and verify the checked-out hash.
 
 The final publication associated with that repository is available from PMLR:
 https://proceedings.mlr.press/v271/adachi25a.html
+
+## UCI Bike Sharing
+
+The non-weather extension uses the hourly Bike Sharing dataset from the UCI
+Machine Learning Repository. The archive is released under CC BY 4.0. The
+analysis script downloads the archive, verifies its SHA-256 hash, and reads
+`hour.csv`. The archive is not redistributed in this release.
+
+- Dataset page: https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset
+- DOI: https://doi.org/10.24432/C5W894
+- Archive: https://archive.ics.uci.edu/static/public/275/bike+sharing+dataset.zip
+- Archive SHA-256: `b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401`
+- Source rows: 17,379
+
+For each eligible hour, the forecast ensemble contains the 20 most recent
+earlier rental counts with the same hour and working-day status. The audit uses
+2,000 evenly spaced cases from the 16,419 eligible cases. It uses no future
+count to build an ensemble.

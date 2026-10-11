@@ -1,0 +1,54 @@
+{
+  "repository": "https://github.com/ma921/CRPS.git",
+  "audit_date": "2026-10-11",
+  "commit_count": 4,
+  "branch_heads": [
+    {
+      "ref": "refs/heads/main",
+      "commit": "dddd3ea46a6199d2ed48019c7825e79fb242787e"
+    }
+  ],
+  "commits": [
+    {
+      "commit": "8ebea1fff80c6c27a9099a80814dda0a8a8403c0",
+      "authored_at": "2025-05-25T12:08:55+09:00",
+      "subject": "Initial commit",
+      "target_blobs": {
+        "utils/crps.py": null,
+        "utils/kernel_quadrature.py": null
+      }
+    },
+    {
+      "commit": "ecfc8d3879275972ea4f15fd0839c1b0ee3f333f",
+      "authored_at": "2025-05-25T12:09:22+09:00",
+      "subject": "Add files via upload",
+      "target_blobs": {
+        "utils/crps.py": "f830bd30a4ab176c714c28144744c4b3640fab07",
+        "utils/kernel_quadrature.py": "97bbfd8aa220275ee36dd19d6d9bd783007dfcbb"
+      }
+    },
+    {
+      "commit": "f7e3f8fba57cd281511dbd19d7ef86594d4dc969",
+      "authored_at": "2025-05-25T12:13:48+09:00",
+      "subject": "Update README.md",
+      "target_blobs": {
+        "utils/crps.py": "f830bd30a4ab176c714c28144744c4b3640fab07",
+        "utils/kernel_quadrature.py": "97bbfd8aa220275ee36dd19d6d9bd783007dfcbb"
+      }
+    },
+    {
+      "commit": "dddd3ea46a6199d2ed48019c7825e79fb242787e",
+      "authored_at": "2025-05-25T12:14:30+09:00",
+      "subject": "Update README.md",
+      "target_blobs": {
+        "utils/crps.py": "f830bd30a4ab176c714c28144744c4b3640fab07",
+        "utils/kernel_quadrature.py": "97bbfd8aa220275ee36dd19d6d9bd783007dfcbb"
+      }
+    }
+  ],
+  "code_present_from_commit": "ecfc8d3879275972ea4f15fd0839c1b0ee3f333f",
+  "commits_containing_code": 3,
+  "distinct_crps_blob_count": 1,
+  "distinct_kernel_quadrature_blob_count": 1,
+  "target_code_unchanged_after_introduction": true
+}

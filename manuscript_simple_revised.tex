@@ -5,7 +5,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
 \setlength{\emergencystretch}{2em}
-\title{When Compressed CRPS Depends on Measurement Units:\\Diagnosis and an Affine-Stable Correction}
+\title{When Compressed CRPS Depends on Measurement Units:\\An Affine Metamorphic Audit and Stable Correction}
 \author{Hurcheson Asante Ofori and Jeffery Opoku}
 \date{}
 
@@ -13,7 +13,7 @@
 \maketitle
 
 \begin{abstract}
-The continuous ranked probability score, or CRPS, is used to judge probability forecasts. We audit public code released with a kernel quadrature paper. Its compressed routine applies an equal-weight correction to unequal weights. We derive the resulting translation error and verify the formula against unchanged code. We then give an affine-standardized weighted CRPS wrapper. The wrapper standardizes an ensemble before compression and maps the score back to the original units. We prove that its score has the correct behavior under every positive affine recoding. In controlled tests, 11 of 12 settings pass the planned numerical checks; the failed setting remains a failure. We also study 39,575 temperature cases and 2,749 precipitation cases. Celsius-to-Kelvin conversion changes every released temperature score. For precipitation, millimetre-to-inch conversion gives a maximum released-score error of 14.90 mm after conversion back to the original units. A stricter affine recoding gives a median error of 34.00 mm. The affine-standardized wrapper stays within $4.46\times10^{-14}$ mm in both tests. Its median runtime is no larger than that of the released compressed routine in benchmarks with 100, 500, and 2,000 draws. However, an exact sorted fair CRPS is much faster in this univariate setting. The public repository still ends at its May 25, 2025 commit, which predates the final paper. Our claims therefore concern that public artifact, not a published figure. The wrapper is not a new proper score; it is a unit-stable way to run and score an unequal-weight compressor.
+The continuous ranked probability score, or CRPS, is used to judge probability forecasts. We audit public code released with a kernel quadrature paper. Its compressed routine applies an equal-weight correction to unequal weights. We derive the resulting translation error and verify the formula against unchanged code. We also turn the positive-affine law of CRPS into a reusable software test. Four public package interfaces pass all 20,000 equal-weight comparisons assigned to each interface. Two public weighted interfaces pass all 20,000 weighted comparisons assigned to each interface. The largest mapped-back error is $1.50\times10^{-12}$. These negative controls show that the failure is not a general feature of CRPS software. A full history audit finds that the target source files stayed unchanged in every public commit that contained them. We then give an affine-standardized weighted CRPS wrapper and prove its behavior under every positive affine recoding. In controlled tests, 11 of 12 settings pass the planned checks; the failed setting remains a failure. We study 39,575 temperature cases, 2,749 precipitation cases, and 2,000 bike-demand cases. A bike-demand recoding gives a median released-score error of 144.84 rides after conversion back to the original scale. The wrapper stays within $2.85\times10^{-13}$ rides. Its first rounding rule failed on ten half-grid cases. We retain that failure, add a regression test, and use a guarded half-up rule. The public repository predates the final paper. Our claims therefore concern that public artifact, not a published figure. The wrapper is not a new proper score; it is a unit-stable way to run and score an unequal-weight compressor.
 \end{abstract}
 
 \section{Why this audit matters}
@@ -26,22 +26,24 @@ We study the public code linked to Adachi, Fujisawa, and Osborne \cite{adachi}. 
 
 This scope is intentional. The repository names the paper and contains the scoring and compression functions examined here. It does not contain the complete pipelines for the published convergence study, multisinusoidal comparison, or eight-dataset table. A defect in the released function is evidence about that implementation. It is not, by itself, evidence against every result in the paper.
 
-We ask four questions.
+We ask five questions.
 \begin{enumerate}
 \item Does the released code compute the same estimators that the paper describes?
 \item Does the unequal weight correction preserve a basic property of CRPS when the measurement origin changes?
 \item Does the issue survive full compression and change accuracy or model choice in controlled tests?
 \item Can a simple wrapper restore the correct behavior under changes of both origin and scale without making the compressed routine slower?
+\item Do standard CRPS package interfaces pass the same test, and was the target code changed anywhere in its public history?
 \end{enumerate}
 
-The paper does six things.
+The paper does seven things.
 \begin{enumerate}
 \item It separates the equation in the paper from the formula used in the released code.
 \item It shows that the released uncompressed kernel routine matches the known fair CRPS on distinct samples.
 \item It gives an exact formula for the translation error caused by using an equal weight correction with unequal weights.
 \item It gives and proves an affine-standardized weighted CRPS wrapper for unequal-weight compression.
-\item It reports full workflow tests on synthetic, temperature, and precipitation forecasts, including a failed planned check and a claim that did not transfer to the released code.
+\item It reports full workflow tests on synthetic, temperature, precipitation, and bike-demand forecasts, including failed checks and a claim that did not transfer to the released code.
 \item It compares runtime and accuracy against both pairwise and sorted exact fair CRPS.
+\item It gives cross-package negative controls and an executable audit of the full public source history.
 \end{enumerate}
 
 The fair CRPS and weighted empirical CRPS are not new. They come from earlier work on scoring rules and ensemble evaluation \cite{matheson,gneiting,ferro,zamo,bouallegue,kelen}. Positive weighted kernel quadrature is also established \cite{hayakawa}. Our contribution is narrower. We give the source-specific identity, check it against unchanged code, and measure its effect. We also give a general affine-standardization wrapper with an exact transformation law. The wrapper does not change the underlying score. It controls what numerical object reaches the compressor.
@@ -120,6 +122,24 @@ ASW-CRPS & Weighted empirical CRPS after location and range standardization & Af
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\subsection*{An affine metamorphic test}
+
+The positive-affine law gives a simple software test. For normalized nonnegative weights $p_i$, define
+\[
+S_w(x,y)=\sum_i p_i|x_i-y|-\frac12\sum_{i,j}p_ip_j|x_i-x_j|.
+\]
+For $a>0$ and any $b$,
+\[
+S_w(ax+b,ay+b)=aS_w(x,y).
+\]
+Every absolute difference is multiplied by $a$, while the common shift $b$ cancels. This proves the identity. Equal weights give the usual empirical CRPS as a special case.
+
+For an implementation $\widehat S$, we therefore test
+\[
+E_{a,b}=\left|a^{-1}\widehat S(ax+b,ay+b)-\widehat S(x,y)\right|.
+\]
+This is a metamorphic test: it checks a relation between two outputs even when no separate answer key is available. A large value of $E_{a,b}$ is evidence of an implementation problem or a stated departure from CRPS. A small value is only a necessary check. It does not prove that every part of the implementation is correct.
 
 \section{Main mathematical result}
 
@@ -217,7 +237,7 @@ It follows that
 \]
 The compressor therefore receives the same standardized values and returns the same nodes and weights. The weighted score inside braces is unchanged, while the outside range is multiplied by $a$. This proves the result. The constant-ensemble case follows directly from $|ax_1+b-(ay+b)|=a|x_1-y|$. \hfill$\square$
 
-The implementation rounds standardized coordinates to six decimal places before converting them to the float32 input used by the released compressor. This fixed numerical grid prevents two mathematically equal standardized inputs from landing on opposite sides of a float32 boundary. The rounding step is part of the implementation, not part of the theorem.
+The implementation maps standardized coordinates to a grid with spacing $10^{-6}$ before converting them to the float32 input used by the released compressor. It uses guarded half-up rounding. The guard acts only at machine-level half-grid ties. This detail was not in our first implementation. Ordinary banker's rounding failed on ten bike-demand case--transformation pairs because two mathematically equal coordinates landed on opposite sides of a half-grid boundary. We keep that failed result, add the exact case as a regression test, and use the guarded rule in the final code. The grid step is part of the implementation, not part of the theorem.
 
 ASW-CRPS is not a new proper scoring rule. It applies the known weighted empirical CRPS after a deterministic change of coordinates. It guarantees the right transformation law, but it does not make adaptively selected nodes unbiased for population CRPS.
 
@@ -231,7 +251,13 @@ The main robustness rule was fixed before the run. All 12 cells had to pass thei
 
 The four forecast candidates are $(0,1)$, $(0,0.9)$, $(0.15,1)$, and $(0.15,0.9)$ in location and scale. This grid is small and one-sided. The model-choice results are therefore diagnostic. They do not estimate performance over all forecasting problems.
 
-The affine extension uses 2,749 precipitation cases with 11 ensemble members. It tests a millimetre-to-inch conversion and a positive affine recoding $x'=x/25.4+10$. Scores from the transformed system are mapped back to millimetres before comparison. The planned numerical tolerance is $2\times10^{-4}$ mm. The runtime study uses standard Normal ensembles with 100, 500, and 2,000 draws. Each cell has 12 independent repetitions. It compares the released compressed score, ASW-CRPS, pairwise fair CRPS, and the exact sorted fair CRPS formula.
+The affine extension uses 2,749 precipitation cases with 11 ensemble members. It tests a millimetre-to-inch conversion and a positive affine recoding $x'=x/25.4+10$. Scores from the transformed system are mapped back to millimetres before comparison. The planned numerical tolerance is $2\times10^{-4}$ mm.
+
+The non-weather extension uses the hourly UCI Bike Sharing data \cite{bike}. For each eligible hour, a past-only ensemble contains the 20 most recent earlier rental counts with the same hour and working-day status. We audit 2,000 cases selected at even positions from 16,419 eligible cases. We test $x'=x/100$ and $x'=x/100+10$, and map every score back to rides. The compressor uses ten landmarks and six nodes. No future count is used to construct an ensemble.
+
+The runtime study uses standard Normal ensembles with 100, 500, and 2,000 draws. Each cell has 12 independent repetitions. It compares the released compressed score, ASW-CRPS, pairwise fair CRPS, and the exact sorted fair CRPS formula.
+
+The cross-package control uses 4,000 forecast cases. It crosses four distributions with ensemble sizes 5, 11, 50, and 101, using 250 cases in each cell. Each case is tested under five positive affine recodings. This gives 20,000 comparisons per interface. The distributions are Normal, lognormal, Student $t$ with 3 degrees of freedom, and a two-component Gaussian mixture. The five recodings include pure shifts, a millimetre-to-inch scale, a scale of 25.4, and a scale of 1,000 with a shift of 100,000. A comparison passes when $E_{a,b}\leq10^{-8}$ in the original units. The test covers equal and unequal weights.
 
 \section{Tests on the released code}
 
@@ -281,7 +307,38 @@ The failed lognormal setting was $(500,100,50)$. One float32 shift merged two ne
 
 \FloatBarrier
 
-\section{What the results do and do not show}
+\section{External controls, real data, and limits}
+
+\subsection{Cross-package negative controls}
+
+We tested the public interfaces in \texttt{properscoring} 0.1, \texttt{scoringrules} 0.11.0, \texttt{scores} 2.7.0, and \texttt{xskillscore} 0.0.29 \cite{properscoring,scoringrules,scores,xskillscore}. We also used direct sorted and weighted formulas as local references. Table~\ref{tab:crosslibrary} gives the results. Every interface passed every assigned affine comparison. The largest mapped-back error was $1.50\times10^{-12}$, far below the planned tolerance. Agreement with the local reference was also within $6.78\times10^{-15}$.
+
+\begin{table}[htbp]
+\centering
+\caption{Affine metamorphic negative controls. Each row uses 4,000 forecast cases and five recodings per case. The tolerance is $10^{-8}$ in the original units.}
+\label{tab:crosslibrary}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Interface & Target & Comparisons & Failures & Maximum mapped-back error \\
+\midrule
+Local sorted formula & Equal-weight empirical CRPS & 20,000 & 0 & $1.50\times10^{-12}$ \\
+\texttt{properscoring} & Equal-weight empirical CRPS & 20,000 & 0 & $1.32\times10^{-12}$ \\
+\texttt{scoringrules} & Equal-weight empirical CRPS & 20,000 & 0 & $1.32\times10^{-12}$ \\
+\texttt{scores} & Equal-weight empirical CRPS & 20,000 & 0 & $1.50\times10^{-12}$ \\
+\texttt{xskillscore} & Equal-weight empirical CRPS & 20,000 & 0 & $1.32\times10^{-12}$ \\
+Local weighted formula & Weighted empirical CRPS & 20,000 & 0 & $1.37\times10^{-12}$ \\
+\texttt{properscoring} & Weighted empirical CRPS & 20,000 & 0 & $1.37\times10^{-12}$ \\
+\texttt{scoringrules} & Weighted empirical CRPS & 20,000 & 0 & $1.37\times10^{-12}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+These rows are package-level controls, not four independent mathematical replications. The tested version of \texttt{xskillscore} calls \texttt{properscoring} for ensemble CRPS. The \texttt{scores} project also records adapted CRPS code in its notice file. We report these links because code inheritance matters. The separate \texttt{scoringrules} path and both local formulas provide distinct calculations. Together, the controls show that the affine test is easy to pass with ordinary empirical CRPS code. They do not show that every feature of these packages is correct.
+
+We also audited all four public commits in the target repository. The first commit contains no target code. The next commit introduces \texttt{utils/crps.py} and \texttt{utils/kernel\_quadrature.py}. Their Git blob identifiers remain exactly the same in the two later commits, which change only the README. Thus every public commit that contains the target routine contains the same audited code. This narrows the provenance claim. It still does not connect the routine to a published figure.
 
 \subsection{Real weather forecasts}
 
@@ -349,6 +406,34 @@ Sorted fair CRPS & $8.33\times10^{-17}$ & $1.07\times10^{-14}$ & $8.44\times10^{
 }
 \end{table}
 
+\subsection{Bike-sharing demand}
+
+We next used the UCI Bike Sharing data to test a different application \cite{bike}. The source file has 17,379 hourly rental counts. It is released under CC BY 4.0. We downloaded the named archive, checked its SHA-256 hash, and did not redistribute it. The rolling ensemble for each audited hour contains only 20 earlier counts with the same hour and working-day status. Of 16,419 eligible cases, we selected 2,000 at even positions across time.
+
+Table~\ref{tab:bike} gives the results. Dividing counts by 100 changes only the unit. The released compressed score exceeds the tolerance in 47.95 percent of cases, with a maximum mapped-back error of 106.28 rides. Adding 10 after the division also changes the origin. Under that recoding, every released score fails the tolerance. The median error is 144.84 rides and the maximum is 779.76 rides. ASW-CRPS and sorted fair CRPS remain at numerical roundoff.
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute score changes on 2,000 past-only bike-demand forecasts after transformed scores are returned to rides. The tolerance is $2\times10^{-4}$ rides.}
+\label{tab:bike}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{Rides divided by 100} & \multicolumn{2}{c}{Division plus shift of 10} \\
+Method & Median & Maximum & Median & Maximum \\
+\midrule
+Released compressed & $1.75\times10^{-4}$ & 106.276 & 144.842 & 779.764 \\
+Weighted empirical & $1.61\times10^{-5}$ & 25.458 & 1.298 & 57.147 \\
+ASW-CRPS & $1.78\times10^{-15}$ & $1.28\times10^{-13}$ & $2.49\times10^{-14}$ & $2.84\times10^{-13}$ \\
+Sorted fair CRPS & $3.55\times10^{-15}$ & $8.53\times10^{-14}$ & $2.84\times10^{-14}$ & $2.42\times10^{-13}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+The first ASW-CRPS run did not pass. Its six-decimal banker's rounding rule produced ten half-grid mismatches and a maximum residual of 0.413 rides. We did not remove this failed run. We stored it as a development diagnostic and added one exact failing ensemble to the unit tests. Guarded half-up rounding removes all ten coordinate mismatches. The final maximum ASW-CRPS residual is $2.85\times10^{-13}$ rides. This was a post-hoc software correction, so it is evidence about implementation hardening rather than a planned confirmatory result.
+
 \FloatBarrier
 
 \subsection{Runtime and accuracy}
@@ -382,21 +467,23 @@ The results do not prove that a published figure is wrong. The released reposito
 
 Weighted empirical CRPS is a useful comparison because it scores the compressed weighted distribution directly. It is not a new score. Translation anchoring and affine standardization are wrappers around the same score. The first subtracts a translation-invariant anchor. The second also divides by a positive scale and maps the result back to the original units. Neither wrapper proves population unbiasedness when nodes and weights are chosen adaptively. A method should state which distribution it scores before making a claim about bias.
 
-The model-selection experiments are synthetic. Their forecast grid is small and uses only positive location errors. The main robustness study has five observations per dataset. The real-data checks add operational temperature and precipitation ensembles, but all three datasets are weather data. These choices make the paper a controlled software audit. They do not make it a broad test of forecasting practice.
+The model-selection experiments are synthetic. Their forecast grid is small and uses only positive location errors. The main robustness study has five observations per dataset. The real-data checks add operational temperature and precipitation ensembles and a past-only bike-demand ensemble. The bike forecast is a simple rolling construction, not a production demand model. The cross-package controls broaden the software evidence, not the application domains. These choices make the paper a controlled software audit. They do not make it a broad test of forecasting practice.
 
-A stronger external validation would add negative location errors, more scale errors, more locations, wind forecasts, and a non-weather domain. The present evidence is enough to test an implementation property because the affine transformation law is distribution free. It is not enough to estimate how often the defect changes decisions across all operational forecasting systems.
+A stronger external validation would add negative location errors, more scale errors, more locations, wind forecasts, and an independent operational forecast outside weather. The present evidence is enough to test an implementation property because the affine transformation law is distribution free. It is not enough to estimate how often the defect changes decisions across all operational forecasting systems.
 
 \subsection*{Threats to validity}
 
 \textbf{Source mapping.} The public commit predates the final paper. The released compressor and the final paper use different integrands. This limits the claim to the released implementation.
 
-\textbf{External validity.} The synthetic tests cover symmetry, skew, and heavy tails. The real-data checks add 39,575 temperature cases and 2,749 precipitation cases, for 42,324 cases in total. The cases come from two weather data sources. Other variables, regions, and ensemble systems may produce different magnitudes.
+\textbf{External validity.} The synthetic tests cover symmetry, skew, and heavy tails. The real-data checks add 39,575 temperature cases, 2,749 precipitation cases, and 2,000 bike-demand cases, for 44,324 cases in total. The cases cover weather and transport demand, but the bike ensemble is a simple past-only benchmark. Other variables, regions, and ensemble systems may produce different magnitudes.
 
 \textbf{Model grid.} The four candidates use only zero or positive location error. A symmetric grid could change finite sample selection rates. We therefore treat the ranking results as bounded evidence.
 
 \textbf{Uncertainty.} The bootstrap has 50 independent blocks per cell. The intervals support cell level comparisons, not a claim that every result would repeat in a new study.
 
-\textbf{Finite precision.} Compression uses float32 because the released code does. The one failed control shows that rounding can merge close nodes. The double precision replay explains the event but does not replace the planned result.
+\textbf{Finite precision.} Compression uses float32 because the released code does. One planned control shows that a shift can merge close nodes. The first bike extension also found ten half-grid failures in our own banker's rounding rule. We keep both failures. The final guarded rule removes the bike failures, but it does not turn the earlier planned control into a pass.
+
+\textbf{Package dependence.} The package controls are not fully independent. \texttt{xskillscore} uses \texttt{properscoring}, and \texttt{scores} records adapted CRPS code. We therefore treat the table as a cross-interface negative control, not as four independent replications.
 
 \subsection*{Practical correction path}
 
@@ -404,21 +491,21 @@ A safe software correction should start by naming the target. If the goal is to 
 
 \section{Reproducibility}
 
-The main robustness study uses Python 3.12.14, Torch 2.14.1 with CPU support, BoTorch 0.18.1, GPyTorch 1.15.2, NumPy 2.5.3, and SciPy 1.18.1. Its exact package set is stored in \texttt{requirements-main-lock.txt}. The expanded real-data and affine study uses Python 3.13.7, Torch 2.14.0 with CPU support, GPyTorch 1.15.2, NumPy 2.4.6, pandas 2.3.3, and SciPy 1.16.3. Its exact package set is stored in \texttt{requirements-real-data-lock.txt}. Compression remains in float32 because that is how the released source works. Score calculations use float64 after the source returns its nodes and weights.
+The main robustness study uses Python 3.12.14, Torch 2.14.1 with CPU support, BoTorch 0.18.1, GPyTorch 1.15.2, NumPy 2.5.3, and SciPy 1.18.1. Its exact package set is stored in \texttt{requirements-main-lock.txt}. The expanded real-data and affine study uses Python 3.13.7, Torch 2.14.0 with CPU support, GPyTorch 1.15.2, NumPy 2.4.6, pandas 2.3.3, and SciPy 1.16.3. Its exact package set is stored in \texttt{requirements-real-data-lock.txt}. The cross-package controls use Python 3.13.7 and the exact package versions in \texttt{requirements-independent-controls-lock.txt}. Compression remains in float32 because that is how the released source works. Score calculations use float64 after the source returns its nodes and weights.
 
-The main robustness run completes 24,000 source compressions and 192 unchanged public score checks. The expanded validation adds 42,324 real forecast cases, seed and budget sensitivity checks, equal-budget comparisons, a rolling ranking study, precipitation affine tests, and runtime comparisons. The release includes the scripts, protocols, public data files, JSON results, tables, and figures needed to inspect these claims. It does not redistribute the upstream source tree. Instead, \texttt{real\_data/fetch\_pinned\_source.py} retrieves the named public commit and verifies its hash. \texttt{DATA\_SOURCES.md} records the origin of each included dataset.
+The main robustness run completes 24,000 source compressions and 192 unchanged public score checks. The expanded validation adds 44,324 real forecast cases, seed and budget sensitivity checks, equal-budget comparisons, a rolling ranking study, precipitation and bike-demand affine tests, and runtime comparisons. The cross-package module adds 160,000 recorded affine comparisons across equal and unequal weight interfaces. The history module clones the public repository, reads every commit, and stores only commit and blob identifiers. The release includes the scripts, protocols, public data files, JSON results, tables, and figures needed to inspect these claims. It does not redistribute the upstream source tree or the UCI archive. Instead, the scripts fetch the named sources and verify their hashes. \texttt{DATA\_SOURCES.md} records the origin of each dataset.
 
-A package-level script, \texttt{run\_all.py}, rebuilds the manuscript, runs unit tests for the affine wrapper, verifies the stored temperature and precipitation results, and writes \texttt{SHA256SUMS.txt}. The public package is at \href{https://github.com/jopoku16/crps-affine-audit}{github.com/jopoku16/crps-affine-audit}. The fixed release is archived at \href{https://doi.org/10.5281/zenodo.23288536}{doi:10.5281/zenodo.23288536}. \texttt{CITATION.cff} and \texttt{.zenodo.json} provide release metadata.
+A package-level script, \texttt{run\_all.py}, rebuilds the manuscript, runs four unit tests for the affine wrapper, verifies the stored weather, bike-demand, cross-package, and source-history results, and writes \texttt{SHA256SUMS.txt}. The public package is at \href{https://github.com/jopoku16/crps-affine-audit}{github.com/jopoku16/crps-affine-audit}. The first fixed release is archived at \href{https://doi.org/10.5281/zenodo.23288536}{doi:10.5281/zenodo.23288536}. The new controls will require a new fixed release before journal submission. \texttt{CITATION.cff} and \texttt{.zenodo.json} provide release metadata.
 
 The documentary audit also records the source commit, a clean source diff, the publication PDF hash, the accessible repository history, and the exact objects used in the map in Table~\ref{tab:mapping}. The main simulation output stores per-case seeds, source-call diagnostics, support overlap, weight changes, score changes, reference values, and dataset-level error summaries. The failed cell and its later float64 diagnosis remain separate records. This keeps the planned verdict from being overwritten by a post-run explanation.
 
 \section{Conclusion}
 
-The released code contains a clear mismatch between unequal compression weights and an equal-weight correction. The resulting translation error has a simple exact formula. Direct calls to the unchanged code agree with that formula. Full-workflow tests show that the problem can change model rankings in the synthetic settings studied here. Temperature and precipitation data show that the problem is not tied to one variable or one kind of unit change.
+The released code contains a clear mismatch between unequal compression weights and an equal-weight correction. The resulting translation error has a simple exact formula. Direct calls to the unchanged code agree with that formula. The same target code appears in every public commit that contains the routine. Full-workflow tests show that the problem can change model rankings in the synthetic settings studied here. Temperature, precipitation, and bike-demand data show that the problem is not tied to one variable, one domain, or one kind of unit change.
 
-ASW-CRPS gives a unit-stable way to keep the released compression workflow. Its exact positive-affine law is the main general result beyond the source audit. It is not a new proper score, and it does not prove unbiasedness after adaptive compression. For one-dimensional ensembles, exact sorted fair CRPS is both simpler and much faster in our benchmark. The paper therefore supports a precise correction and a practical diagnostic. It does not support a claim about every published experiment or every forecasting system.
+The affine metamorphic test gives a small and reusable diagnostic for CRPS software. The public package interfaces pass all 120,000 comparisons assigned to them. The two local references also pass their 40,000 comparisons. ASW-CRPS gives a unit-stable way to keep the released compression workflow. Its exact positive-affine law is the main general result beyond the source audit. It is not a new proper score, and it does not prove unbiasedness after adaptive compression. For one-dimensional ensembles, exact sorted fair CRPS is both simpler and much faster in our benchmark. The paper therefore supports a precise correction and a practical diagnostic. It does not support a claim about every published experiment or every forecasting system.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{matheson} J. E. Matheson and R. L. Winkler. Scoring Rules for Continuous Probability Distributions. \emph{Management Science}, 22(10):1087 to 1096, 1976. \href{https://doi.org/10.1287/mnsc.22.10.1087}{doi:10.1287/mnsc.22.10.1087}.
 \bibitem{gneiting} T. Gneiting and A. E. Raftery. Strictly Proper Scoring Rules, Prediction, and Estimation. \emph{Journal of the American Statistical Association}, 102(477):359 to 378, 2007. \href{https://doi.org/10.1198/016214506000001437}{doi:10.1198/016214506000001437}.
 \bibitem{ferro} C. A. T. Ferro. Fair scores for ensemble forecasts. \emph{Quarterly Journal of the Royal Meteorological Society}, 2014. \href{https://doi.org/10.1002/qj.2270}{doi:10.1002/qj.2270}.
@@ -428,6 +515,11 @@ ASW-CRPS gives a unit-stable way to keep the released compression workflow. Its 
 \bibitem{bouallegue} Z. Ben Bouallegue, C. A. T. Ferro, M. Leutbecher, and D. S. Richardson. Predictive verification for the design of partially exchangeable multi model ensembles. \emph{Tellus A}, 72(1):1 to 12, 2020. \href{https://doi.org/10.1080/16000870.2019.1697165}{doi:10.1080/16000870.2019.1697165}.
 \bibitem{hayakawa} S. Hayakawa, H. Oberhauser, and T. Lyons. Positively Weighted Kernel Quadrature via Subsampling. \emph{Advances in Neural Information Processing Systems}, 2022. \href{https://arxiv.org/abs/2107.09597}{arXiv:2107.09597}.
 \bibitem{ensemblepp} J. W. Messner. \texttt{ensemblepp}: Ensemble Postprocessing Data Sets, version 1.0-0. CRAN, 2019. \href{https://cran.r-project.org/package=ensemblepp}{Package page}.
+\bibitem{bike} H. Fanaee-T. Bike Sharing [Dataset]. UCI Machine Learning Repository, 2013. \href{https://doi.org/10.24432/C5W894}{doi:10.24432/C5W894}.
+\bibitem{properscoring} The Climate Corporation. \texttt{properscoring}: Proper scoring rules in Python, version 0.1. \href{https://github.com/properscoring/properscoring}{Project repository}.
+\bibitem{scoringrules} F. Zanetta and S. Allen. \texttt{scoringrules}: A Python library for probabilistic forecast evaluation, version 0.11.0, 2024. \href{https://github.com/frazane/scoringrules}{Project repository}.
+\bibitem{scores} N. Loveday and collaborators. \texttt{scores}: Forecast verification in Python, version 2.7.0. \href{https://github.com/nci/scores}{Project repository}.
+\bibitem{xskillscore} R. Bell and collaborators. \texttt{xskillscore}: Metrics for verifying forecasts, version 0.0.29. \href{https://github.com/xarray-contrib/xskillscore}{Project repository}.
 \end{thebibliography}
 
 \medskip
