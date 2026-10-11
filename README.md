@@ -4,7 +4,9 @@ This folder contains the revised manuscript and the evidence files for the CRPS 
 
 Public repository: https://github.com/jopoku16/crps-affine-audit
 
-First archived release: https://doi.org/10.5281/zenodo.23288536
+Submission release (v1.1.0): https://doi.org/10.5281/zenodo.23302078
+
+All versions: https://doi.org/10.5281/zenodo.23288535
 
 ## Main files
 
@@ -77,4 +79,4 @@ python -m venv .venv-controls
 python independent_controls/audit_source_history.py
 ```
 
-The existing Zenodo DOI identifies the first fixed release. The expanded controls in this working tree need a new versioned archive before they are cited as a fixed journal-submission release.
+Zenodo DOI `10.5281/zenodo.23302078` identifies the fixed v1.1.0 journal-submission release. The concept DOI `10.5281/zenodo.23288535` always resolves to the newest published version.
